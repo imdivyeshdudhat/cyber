@@ -1,10 +1,9 @@
 <?php
 
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class BankTransaction extends Model
 {
@@ -13,6 +12,7 @@ class BankTransaction extends Model
     protected $fillable = [
         'info_type',
         'outward_no',
+        'nodal_officer',
         'acknowledgement_no',
         'account_id',
         'transaction_id',

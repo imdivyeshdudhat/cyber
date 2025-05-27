@@ -5,21 +5,18 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CyberCaseResource\Pages;
 use App\Filament\Resources\CyberCaseResource\RelationManagers;
 use App\Models\CyberCase;
-use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 
 class CyberCaseResource extends Resource
 {
     protected static ?string $model = CyberCase::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-exclamation';
-    
+
     protected static ?string $navigationGroup = 'Case Management';
 
     protected static ?int $navigationSort = 1;
@@ -31,14 +28,14 @@ class CyberCaseResource extends Resource
                 Forms\Components\Section::make('Case Information')
                     ->schema([
                         Forms\Components\TextInput::make('acknowledgement_no')
-                        ->required()
-                        ->unique(ignoreRecord: true),
+                            ->required()
+                            ->unique(ignoreRecord: true),
                         Forms\Components\TextInput::make('nccrp_no')
                             ->required()
                             ->unique(ignoreRecord: true),
                         Forms\Components\DatePicker::make('application_date')
                             ->required(),
-                 
+
                         Forms\Components\Select::make('category')
                             ->required()
                             ->options([
@@ -68,7 +65,6 @@ class CyberCaseResource extends Resource
                                 'closed' => 'Closed',
                             ])
                             ->default('pending'),
-                 
 
                     ])->columns(2),
 
@@ -84,17 +80,13 @@ class CyberCaseResource extends Resource
                         Forms\Components\TextInput::make('complainant_pincode')
                             ->required(),
 
-                        Forms\Components\TextInput::make('complainant_address')
-                          ,
+                        Forms\Components\TextInput::make('complainant_address'),
                         Forms\Components\TextInput::make('police_station'),
                         Forms\Components\TextInput::make('fraud_amount'),
                         Forms\Components\TextInput::make('lean_amount'),
-                  
+
                     ])->columns(3),
 
-             
-
-             
             ]);
     }
 
@@ -132,7 +124,7 @@ class CyberCaseResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('police_station')
                     ->searchable(),
- 
+
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
@@ -154,35 +146,35 @@ class CyberCaseResource extends Resource
                     ]),
             ])
             ->actions([
-             
+
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('print')
                     ->icon('heroicon-o-printer')
                     ->url(fn ($record) => route('filament.resources.cyber-case-resource.pages.print-cyber-case-pdf', ['record' => $record->id]))
                     ->openUrlInNewTab(),
-                ])
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
+
     public static function getRelations(): array
     {
         return [
-            RelationManagers\AccusedProfilesRelationManager::class,
+            RelationManagers\FehristRelationManager::class,
+            // RelationManagers\AccusedProfilesRelationManager::class,
             RelationManagers\BankTransactionsRelationManager::class,
         ];
     }
-
- 
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListCyberCases::route('/'),
             'create' => Pages\CreateCyberCase::route('/create'),
-        
+
             'edit' => Pages\EditCyberCase::route('/{record}/edit'),
             'print' => Pages\PrintCyberCase::route('/print'),
         ];

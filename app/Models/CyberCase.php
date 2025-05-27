@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CyberCase extends Model
 {
@@ -17,13 +15,14 @@ class CyberCase extends Model
 
     protected $fillable = [
         'acknowledgement_no',
+
         'nccrp_no',
         'category',
         'sub_category',
         'lean_amount',
         'fraud_amount',
         'complainant_address',
-     
+
         'application_date',
         'complainant_name',
         'complainant_mobile',
@@ -35,20 +34,21 @@ class CyberCase extends Model
 
     protected $casts = [
         'application_date' => 'datetime',
-      
+
     ];
 
-
-    public function accusedProfiles():HasMany
+    public function accusedProfiles(): HasMany
     {
         return $this->hasMany(AccusedProfile::class, 'case_id');
     }
-    
 
-    public function bankTransactions():HasMany
+    public function bankTransactions(): HasMany
     {
         return $this->hasMany(BankTransaction::class, 'acknowledgement_no', 'acknowledgement_no');
     }
 
-
-} 
+    public function fehrists(): HasMany
+    {
+        return $this->hasMany(Fehrist::class, 'case_id');
+    }
+}
