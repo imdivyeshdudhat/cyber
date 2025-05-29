@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\ReplicateAction;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class DailyReportResource extends Resource
 {
@@ -91,5 +92,16 @@ class DailyReportResource extends Resource
             'edit' => Pages\EditDailyReport::route('/{record}/edit'),
 
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+
+        if (auth()->user()->user_type == 'admin') {
+            return parent::getEloquentQuery()->orderBy('id', 'desc');
+        }
+        $userid = auth()->user()->id;
+
+        return parent::getEloquentQuery()->where('user_id', $userid)->orderBy('id', 'desc');
     }
 }
