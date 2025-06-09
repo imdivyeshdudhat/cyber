@@ -59,8 +59,10 @@
             </tr>
             <!-- Case Information -->
             <tr>
-                <td>Full Name </td>
-                <td colspan="3">{{ $accusedProfile->name }}</td>
+                <th>Full Name </th>
+                <td>{{ $accusedProfile->name }}</td>
+                <th>Date of Birth </th>
+                <td>{{ date('d-m-Y', strtotime($accusedProfile->date_of_birth)) }}</td>
             </tr>
             <tr>
                 <th>Police Station</th>
@@ -69,9 +71,9 @@
                 <td>{{ $accusedProfile->fir_no }}</td>
             </tr>
             <tr>
-                <th>State</th>
+                <th>Accussed State</th>
                 <td>{{ $accusedProfile->state }}</td>
-                <th>City</th>
+                <th>Accussed City</th>
                 <td>{{ $accusedProfile->city }}</td>
             </tr>
 
@@ -263,14 +265,21 @@
 
             <!-- Locations -->
 
+            <tr>
 
+                <th>Name</th>
+                <th>Relation</th>
+                <th>Photo</th>
+                <th>Mobile</th>
+            </tr>
 
             <!-- Family Members -->
 
             @foreach ($accusedProfile->familyMembers ?? [] as $member)
                 <tr>
-                    <td>{{ $member->relation }}</td>
                     <td>{{ $member->name }}</td>
+                    <td>{{ $member->relation }}</td>
+
                     <td>
                         @if ($member->getFirstMedia('family_member_photos'))
                             <img src="{{ $member->getFirstMedia('family_member_photos')->getUrl() }}"
