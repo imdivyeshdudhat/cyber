@@ -20,9 +20,9 @@ class ListDailyReports extends ListRecords
                 ->action(function ($livewire) {
                     $filters = $livewire->getTableFiltersForm()->getState();
 
-                    $from = $filters['date_range']['from'] ?? null;
-                    $to = $filters['date_range']['to'] ?? null;
-                    $userId = $filters['user_id']['value'] ?? null;
+                    $from = $filters['date_range']['from'] ?? now()->startOfMonth()->format('Y-m-d');
+                    $to = $filters['date_range']['to'] ?? now()->endOfMonth()->format('Y-m-d');
+                    $userId = auth()->user()->user_type === 'admin' ? ($filters['user_id']['value'] ?? auth()->id()) : auth()->id();
 
                     return redirect()->route('reports.view', [
                         'user' => $userId,

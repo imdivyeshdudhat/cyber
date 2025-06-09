@@ -12,7 +12,19 @@ class ReportController extends Controller
 {
     public function view(Request $request)
     {
-        $userId = $request->user;
+
+        if (auth()->user()->user_type === 'admin') {
+            $userId = $request->user;
+        } else {
+            if ($request->user == auth()->id()) {
+                $userId = auth()->id();
+            } else {
+                return redirect()->back()->with('error', 'You are not authorized to view this report');
+            }
+        }
+
+       
+
         $from = $request->from;
         $to = $request->to;
         $endDate = $request->endDate;
