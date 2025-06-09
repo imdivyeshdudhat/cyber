@@ -38,13 +38,10 @@ class AccusedProfileResource extends Resource
                 ->schema([
                     TextInput::make('police_station'),
                     TextInput::make('fir_no')->label('FIR No.')->required(),
-                    DatePicker::make('case_date')->label('FIR Date'),
-                    TextInput::make('fraud_amount')
-                        ->numeric()
-                        ->prefix('₹')
-                        ->label('Fraud Amount'),
-                    TextInput::make('city'),
-                    Select::make('state')->label('State')
+                    // DatePicker::make('case_date')->label('FIR Date'),
+
+                    TextInput::make('city')->label('Accused City'),
+                    Select::make('state')->label('Accused State')
                         ->searchable()
                         ->options([
                             'Andhra Pradesh' => 'Andhra Pradesh',
@@ -85,6 +82,11 @@ class AccusedProfileResource extends Resource
                             'Lakshadweep' => 'Lakshadweep',
                             'Puducherry' => 'Puducherry',
                         ]),
+                    TextInput::make('fraud_amount')
+                        ->numeric()
+                        ->prefix('₹')
+                        ->label('Fraud Amount'),
+                    TextInput::make('compliant_person')->label('Victim Name'),
 
                 ])
                 ->columns(2),
@@ -94,7 +96,7 @@ class AccusedProfileResource extends Resource
                     Textarea::make('accused_role'),
                     Section::make('Transaction Information')
                         ->schema([
-                            
+
                             Repeater::make('bank_accounts')->label('Transactions')
                                 ->schema([
                                     TextInput::make('layer'),
@@ -104,6 +106,7 @@ class AccusedProfileResource extends Resource
                                     TextInput::make('bank_name'),
                                     TextInput::make('bank_account_no'),
                                     TextInput::make('ifsc')->label('IFSC Code'),
+                                    TextInput::make('noofcomplaints')->label('No of Complains'),
 
                                 ])->columns(4),
 
@@ -115,11 +118,6 @@ class AccusedProfileResource extends Resource
                 ->schema([
                     TextInput::make('name')->label('Full Name')->required(),
                     DatePicker::make('date_of_birth'),
-
-                    TextInput::make('fathers_name'),
-                    TextInput::make('mothers_name'),
-
-                    TextInput::make('compliant_person')->label('Complaint Person'),
 
                     SpatieMediaLibraryFileUpload::make('photo_path')->multiple(),
 
@@ -183,7 +181,15 @@ class AccusedProfileResource extends Resource
                 ])
                 ->columns(1),
 
-            Section::make('Mobile Nos')
+            Section::make('Identification')
+                ->schema([
+                    TextInput::make('aadhar_number'),
+                    TextInput::make('pan_number'),
+                    TextInput::make('gstin'),
+                ])
+                ->columns(3),
+
+            Section::make('Mobile Numbers')
                 ->schema([
                     Repeater::make('mobile_numbers')->label('Mobile Numbers')
                         ->schema([
@@ -193,7 +199,7 @@ class AccusedProfileResource extends Resource
                         ])->columns(3),
                 ])->columns(1),
 
-            Section::make('Email Ids')
+            Section::make('Email Addresses')
                 ->schema([
                     Repeater::make('email_addresses')->label('Email Addresses')
                         ->schema([
@@ -202,21 +208,21 @@ class AccusedProfileResource extends Resource
                             TextInput::make('from_where')->label('From Where?'),
                         ])->columns(3),
                 ])->columns(1),
-            Section::make('Identification')
-                ->schema([
-                    TextInput::make('aadhar_number'),
-                    TextInput::make('pan_number'),
-                    TextInput::make('gstin'),
-                ])
-                ->columns(3),
 
-            Section::make('Additional Information')
+            Section::make('Online Presence')
                 ->schema([
-                    Textarea::make('bio')->rows(3)->columnSpanFull(),
-                    Textarea::make('additional_info')->label('Analysis')->rows(3)->columnSpanFull(),
-
+                    Repeater::make('social_media_profiles')
+                        ->schema([
+                            TextInput::make('platform'),
+                            TextInput::make('url'),
+                        ])
+                        ->columns(1),
+                    Textarea::make('devices')->label('Devices'),
+                    //     Textarea::make('ip_addresses')->label('IP Addresses'),
+                    //  TextInput::make('location'),
                 ])
-                ->columns(3),
+                ->columns(2),
+
             Section::make('Family Members')
                 ->schema([
                     Repeater::make('familyMembers')
@@ -235,6 +241,14 @@ class AccusedProfileResource extends Resource
                 ])
                 ->columns(2),
 
+            Section::make('Additional Information')
+                ->schema([
+                    Textarea::make('bio')->label('Additional Info')->rows(3)->columnSpanFull(),
+                    Textarea::make('additional_info')->label('Anaysis')->rows(3)->columnSpanFull(),
+
+                ])
+                ->columns(3),
+
             // Section::make('Business Details')
             //     ->schema([
             //         TextInput::make('business_name'),
@@ -243,20 +257,6 @@ class AccusedProfileResource extends Resource
             //         TextInput::make('email'),
             //     ])
             //     ->columns(4),
-
-            Section::make('Online Presence')
-                ->schema([
-                    Repeater::make('social_media_profiles')
-                        ->schema([
-                            TextInput::make('platform'),
-                            TextInput::make('url'),
-                        ])
-                        ->columns(1),
-                    Textarea::make('devices')->label('Devices'),
-               //     Textarea::make('ip_addresses')->label('IP Addresses'),
-                  //  TextInput::make('location'),
-                ])
-                ->columns(2),
 
         ]);
     }

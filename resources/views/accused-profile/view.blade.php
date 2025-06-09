@@ -58,7 +58,7 @@
                 </td>
             </tr>
             <!-- Case Information -->
-          
+
             <tr>
                 <th>Police Station</th>
                 <td>{{ $accusedProfile->police_station }}</td>
@@ -66,9 +66,9 @@
                 <td>{{ $accusedProfile->fir_no }}</td>
             </tr>
             <tr>
-                <th>Accussed State</th>
+                <th>Accused State</th>
                 <td>{{ $accusedProfile->state }}</td>
-                <th>Accussed City</th>
+                <th>Accused City</th>
                 <td>{{ $accusedProfile->city }}</td>
             </tr>
 
@@ -100,6 +100,7 @@
                                 <th>Bank</th>
                                 <th>Account No</th>
                                 <th>IFSC</th>
+                                <th>No of Complains</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -112,6 +113,7 @@
                                     <td>{{ $txn['bank_name'] }}</td>
                                     <td>{{ $txn['bank_account_no'] }}</td>
                                     <td>{{ $txn['ifsc'] }}</td>
+                                    <td>{{ $txn['noofcomplaints'] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -127,7 +129,7 @@
                 <td>{{ date('d-m-Y', strtotime($accusedProfile->date_of_birth)) }}</td>
             </tr>
             <tr>
-              
+
                 <th>Photos</th>
                 <td colspan="3">
                     @foreach ($accusedProfile->getMedia() as $media)
@@ -135,7 +137,7 @@
                     @endforeach
                 </td>
             </tr>
-           
+
             <tr>
                 <td colspan="4">
                     <table>
@@ -180,9 +182,9 @@
                 <td></td>
             </tr>
 
-         
 
-         
+
+
 
 
             <!-- Contact Information -->
@@ -193,7 +195,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                   
+
                     <table>
                         <thead>
                             <tr>
@@ -221,7 +223,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                   
+
                     <table>
                         <thead>
                             <tr>
@@ -246,72 +248,73 @@
             <!-- Locations -->
 
 
-           
-            
+
+            @if (count($accusedProfile->social_media_profiles) > 0)
+                <tr>
+                    <th>Platform</th>
+                    <th colspan="3">Profile Link</th>
+
+                </tr>
+
+                <!-- Family Members -->
+
+                @foreach ($accusedProfile->social_media_profiles ?? [] as $social)
+                    <tr>
+                        <td>{{ $social['platform'] }}</td>
+                        <td colspan="3"><a href="{{ $social['url'] }}" target="_blank">{{ $social['url'] }}</a>
+                        </td>
+
+                    </tr>
+                @endforeach
+
+            @endif
             <tr>
-
-
-<th>Platform</th>
-<th colspan="3">Profile Link</th>
-
-</tr>
-
-<!-- Family Members -->
-
-@foreach ($accusedProfile->social_media_profiles ?? [] as $social)
-<tr>
-    <td>{{ $social['platform'] }}</td>
-    <td colspan="3"><a href="{{ $social['url'] }}" target="_blank">{{ $social['url'] }}</a></td>
-   
-</tr>
-@endforeach
-
-<tr>
                 <td colspan="4">
                     <strong>Devices</strong>
                 </td>
-              
+
             </tr>
             <tr>
                 <td colspan="4">
                     {!! nl2br(e($accusedProfile->devices)) !!}
                 </td>
-                  
-            </tr>
-@if($accusedProfile->familyMembers->count() > 0)
-            <tr>  
-                <td colspan="4">
-                    <strong>Family Members</strong>
-                </td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <th>Relation</th>
-                <th>Photo</th>
-                <th>Mobile</th>
-            </tr>
 
-            <!-- Family Members -->
-
-            @foreach ($accusedProfile->familyMembers ?? [] as $familymember)
+            </tr>
+            @if ($accusedProfile->familyMembers->count() > 0)
                 <tr>
-                    <td>{{ $familymember->name }}</td>
-                    <td>{{ $familymember->relation }}</td>
-
-                    <td>
-                    
-                    @foreach ($familymember->getMedia() as $media)
-                        <img src="{{ $media->getUrl() }}" alt="Photo" style="max-width: 300px; height: auto;">
-                    @endforeach
-                    </td>
-                    <td>
-                        Mobile: {{ $familymember->mobile_no }}
-                        @if ($familymember->remarks)
-                            <br>Remarks: {{ $familymember->remarks }}
-                        @endif
+                    <td colspan="4">
+                        <strong>Family Members</strong>
                     </td>
                 </tr>
-            @endforeach
+                <tr>
+                    <th>Name</th>
+                    <th>Relation</th>
+                    <th>Photo</th>
+                    <th>Mobile</th>
+                </tr>
+
+                <!-- Family Members -->
+
+                @foreach ($accusedProfile->familyMembers ?? [] as $familymember)
+                    <tr>
+                        <td>{{ $familymember->name }}</td>
+                        <td>{{ $familymember->relation }}</td>
+
+                        <td>
+
+                            @foreach ($familymember->getMedia() as $media)
+                                <img src="{{ $media->getUrl() }}" alt="Photo"
+                                    style="max-width: 300px; height: auto;">
+                            @endforeach
+                        </td>
+                        <td>
+                            Mobile: {{ $familymember->mobile_no }}
+                            @if ($familymember->remarks)
+                                <br>Remarks: {{ $familymember->remarks }}
+                            @endif
+                        </td>
+                    </tr>
+                @endforeach
             @endif
             <!-- Additional Info -->
 
