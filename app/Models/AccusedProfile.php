@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class AccusedProfile extends Model
+class AccusedProfile extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, InteractsWithMedia, SoftDeletes;
 
     protected $fillable = [
         'case_id',
@@ -36,10 +39,21 @@ class AccusedProfile extends Model
         'locations',
         'bio',
         'additional_info',
+
+        'police_station',
+        'state',
+        'city',
+        'fir_no',
+        'compliant_person',
+        'fraud_amount',
+        'lien_amount',
+        'case_date',
+        'accused_role',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
+        'case_date' => 'date',
         'addresses' => 'array',
         'business_addresses' => 'array',
         'mobile_numbers' => 'array',
@@ -50,12 +64,17 @@ class AccusedProfile extends Model
         'bank_accounts' => 'array',
         'ip_addresses' => 'array',
         'locations' => 'array',
-        'additional_info' => 'array',
+        // 'additional_info' => 'array',
     ];
 
     public function case(): BelongsTo
     {
         return $this->belongsTo(CyberCase::class);
+    }
+
+    public function familyMembers(): HasMany
+    {
+        return $this->hasMany(FamilyMember::class);
     }
 
     // Helper methods for structured data
@@ -100,4 +119,4 @@ class AccusedProfile extends Model
         $this->bank_accounts = $accounts;
         $this->save();
     }
-} 
+}

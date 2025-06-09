@@ -52,8 +52,8 @@ return [
     |
     */
 
-    'url' => env('APP_URL', ''),
-    'asset_url' => env('APP_ASSET_URL', 'http://10.159.191.117/cyber/public/'),
+    'url' => env('APP_URL', 'http://127.0.0.1:8000'),
+    'asset_url' => env('APP_ASSET_URL', 'http://127.0.0.1:8000'),
 
     /*
     |--------------------------------------------------------------------------

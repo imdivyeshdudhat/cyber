@@ -6,6 +6,7 @@ use App\Models\DailyReport;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -29,8 +30,85 @@ class ReportController extends Controller
             ->orderBy('date')
             ->get();
 
-
-
         return view('reports.view', compact('user', 'month', 'startDate', 'endDate', 'reports'));
+    }
+
+    public function showTransactionTree($acknowledgementNo)
+    {
+        $transactions = DB::table('bank_transactions')
+            ->where('acknowledgement_no', $acknowledgementNo)
+            ->get();
+
+        $allTransactions = collect();
+
+        foreach ($transactions as $txn) {
+            $txn->account_id = strtoupper(preg_replace('/[^a-zA-Z0-9]/', '', $txn->account_id ?? ''));
+            $txn->to_account_id = strtoupper(preg_replace('/[^a-zA-Z0-9]/', '', $txn->to_account_id ?? ''));
+            $allTransactions->push($txn);
+        }
+
+        // Map account_id => list of transactions where this account_id is "from"
+        $txnMap = [];
+        foreach ($allTransactions as $txn) {
+            $txnMap[$txn->account_id][] = $txn;
+        }
+
+        // Recursive function to build chains
+        $buildChains = function ($txn, $txnMap, $depth = 1) use (&$buildChains) {
+            $currentLayer = [
+                'layer' => $depth,
+                'from' => $txn->account_id,
+                'to' => $txn->to_account_id,
+                'amount' => $txn->transaction_amount,
+                'bank_name' => $txn->bank_name,
+                'ifsc' => $txn->ifsc_code,
+                'remarks' => $txn->remarks,
+            ];
+
+            $nextTxns = $txnMap[$txn->to_account_id] ?? [];
+
+            if (empty($nextTxns)) {
+                // Terminal node, return one chain with this single layer
+                return [[$currentLayer]];
+            }
+
+            $chains = [];
+            foreach ($nextTxns as $nextTxn) {
+                $subChains = $buildChains($nextTxn, $txnMap, $depth + 1);
+                foreach ($subChains as $chain) {
+                    // Prepend current layer
+                    array_unshift($chain, $currentLayer);
+                    $chains[] = $chain;
+                }
+            }
+
+            return $chains;
+        };
+
+        // Find root accounts = those that appear as "from" but never as "to"
+        $fromAccounts = $allTransactions->pluck('account_id')->unique();
+        $toAccounts = $allTransactions->pluck('to_account_id')->unique();
+        $rootAccounts = $fromAccounts->diff($toAccounts);
+
+        // If no roots found, fallback to all unique from accounts (to avoid empty results)
+        if ($rootAccounts->isEmpty()) {
+            $rootAccounts = $fromAccounts;
+        }
+
+        $allChains = [];
+
+        // For **each root account**, find all transactions that start from that account and build chains from each
+        foreach ($rootAccounts as $rootAccount) {
+            if (! isset($txnMap[$rootAccount])) {
+                continue;
+            }
+
+            foreach ($txnMap[$rootAccount] as $rootTxn) {
+                $chainsFromTxn = $buildChains($rootTxn, $txnMap);
+                $allChains = array_merge($allChains, $chainsFromTxn);
+            }
+        }
+
+        return view('bank.transactions.tree', ['chains' => $allChains]);
     }
 }
