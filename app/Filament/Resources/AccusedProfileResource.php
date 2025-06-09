@@ -124,15 +124,15 @@ class AccusedProfileResource extends Resource
                 ])
                 ->columns(4),
 
-            Section::make('Locations')
+            Section::make('Addresses')
                 ->schema([
 
-                    Repeater::make('locations')->label('Locations')
+                    Repeater::make('locations')->label('')
                         ->schema([
                             TextInput::make('address')->label('Address'),
 
-                            TextInput::make('district')->label('District'),
                             TextInput::make('city'),
+                            TextInput::make('district')->label('District'),
                             Select::make('state')->label('State')
                                 ->searchable()
                                 ->options([
@@ -181,15 +181,15 @@ class AccusedProfileResource extends Resource
                 ])
                 ->columns(1),
 
-            Section::make('Identification')
+            Section::make('')
                 ->schema([
-                    TextInput::make('aadhar_number'),
-                    TextInput::make('pan_number'),
-                    TextInput::make('gstin'),
+                    TextInput::make('aadhar_number')->label('AADHAR No.'),
+                    TextInput::make('pan_number')->label('PAN No.'),
+                    TextInput::make('gstin')->label('GSTIN'),
                 ])
                 ->columns(3),
 
-            Section::make('Mobile Numbers')
+            Section::make('')
                 ->schema([
                     Repeater::make('mobile_numbers')->label('Mobile Numbers')
                         ->schema([
@@ -199,7 +199,7 @@ class AccusedProfileResource extends Resource
                         ])->columns(3),
                 ])->columns(1),
 
-            Section::make('Email Addresses')
+            Section::make('')
                 ->schema([
                     Repeater::make('email_addresses')->label('Email Addresses')
                         ->schema([
@@ -209,7 +209,7 @@ class AccusedProfileResource extends Resource
                         ])->columns(3),
                 ])->columns(1),
 
-            Section::make('Online Presence')
+            Section::make('')
                 ->schema([
                     Repeater::make('social_media_profiles')
                         ->schema([
@@ -217,21 +217,19 @@ class AccusedProfileResource extends Resource
                             TextInput::make('url'),
                         ])
                         ->columns(1),
-                    Textarea::make('devices')->label('Devices'),
+
                     //     Textarea::make('ip_addresses')->label('IP Addresses'),
                     //  TextInput::make('location'),
                 ])
                 ->columns(2),
 
-            Section::make('Family Members')
+            Section::make('')
                 ->schema([
                     Repeater::make('familyMembers')
                         ->relationship()
                         ->schema([
-                            TextInput::make('name')
-                                ->required(),
-                            TextInput::make('relation')
-                                ->required(),
+                            TextInput::make('name'),
+                            TextInput::make('relation')->label('Relationship'),
                             TextInput::make('mobile_no'),
                             SpatieMediaLibraryFileUpload::make('photo'),
                             TextInput::make('remarks'),
@@ -244,7 +242,7 @@ class AccusedProfileResource extends Resource
             Section::make('Additional Information')
                 ->schema([
                     Textarea::make('bio')->label('Additional Info')->rows(3)->columnSpanFull(),
-                    Textarea::make('additional_info')->label('Anaysis')->rows(3)->columnSpanFull(),
+                    Textarea::make('additional_info')->label('Analysis')->rows(3)->columnSpanFull(),
 
                 ])
                 ->columns(3),

@@ -268,18 +268,7 @@
                 @endforeach
 
             @endif
-            <tr>
-                <td colspan="4">
-                    <strong>Devices</strong>
-                </td>
 
-            </tr>
-            <tr>
-                <td colspan="4">
-                    {!! nl2br(e($accusedProfile->devices)) !!}
-                </td>
-
-            </tr>
             @if ($accusedProfile->familyMembers->count() > 0)
                 <tr>
                     <td colspan="4">
