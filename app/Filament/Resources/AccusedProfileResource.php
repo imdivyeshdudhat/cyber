@@ -94,6 +94,7 @@ class AccusedProfileResource extends Resource
                     Textarea::make('accused_role'),
                     Section::make('Transaction Information')
                         ->schema([
+                            
                             Repeater::make('bank_accounts')->label('Transactions')
                                 ->schema([
                                     TextInput::make('layer'),
