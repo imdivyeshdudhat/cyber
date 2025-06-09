@@ -235,14 +235,14 @@ class AccusedProfileResource extends Resource
                 ])
                 ->columns(2),
 
-            Section::make('Business Details')
-                ->schema([
-                    TextInput::make('business_name'),
-                    TextInput::make('business_type'),
-                    TextInput::make('number')->label('Contact Number'),
-                    TextInput::make('email'),
-                ])
-                ->columns(4),
+            // Section::make('Business Details')
+            //     ->schema([
+            //         TextInput::make('business_name'),
+            //         TextInput::make('business_type'),
+            //         TextInput::make('number')->label('Contact Number'),
+            //         TextInput::make('email'),
+            //     ])
+            //     ->columns(4),
 
             Section::make('Online Presence')
                 ->schema([
