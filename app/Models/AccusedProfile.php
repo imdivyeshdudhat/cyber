@@ -60,9 +60,9 @@ class AccusedProfile extends Model implements HasMedia
         'email_addresses' => 'array',
         'social_media_profiles' => 'array',
         'family_members' => 'array',
-        'devices' => 'array',
+    
         'bank_accounts' => 'array',
-        'ip_addresses' => 'array',
+      
         'locations' => 'array',
 
     ];

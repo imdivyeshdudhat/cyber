@@ -252,9 +252,9 @@ class AccusedProfileResource extends Resource
                             TextInput::make('url'),
                         ])
                         ->columns(1),
-                    Textarea::make('type')->label('Devices'),
-                    Textarea::make('ip')->label('IP Address'),
-                    TextInput::make('location'),
+                    Textarea::make('devices')->label('Devices'),
+               //     Textarea::make('ip_addresses')->label('IP Addresses'),
+                  //  TextInput::make('location'),
                 ])
                 ->columns(2),
 

@@ -45,7 +45,7 @@
     </style>
 </head>
 
-<body>
+<body onload="window.print()">
 
 
 
@@ -106,7 +106,7 @@
                             @foreach ($accusedProfile->bank_accounts ?? [] as $txn)
                                 <tr>
                                     <td>{{ $txn['layer'] }}</td>
-                                    <td>{{ $txn['transaction_date'] }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($txn['transaction_date'])) }}</td>
                                     <td>{{ $txn['transaction_amount'] }}</td>
                                     <td>{{ $txn['dispute_amount'] }}</td>
                                     <td>{{ $txn['bank_name'] }}</td>
@@ -135,14 +135,7 @@
                     @endforeach
                 </td>
             </tr>
-            {{-- <tr>
-                <th>Father's Name</th>
-                <td>{{ $accusedProfile->fathers_name }}</td>
-                <th>Mother's Name</th>
-                <td>{{ $accusedProfile->mothers_name }}</td>
-
-
-            </tr> --}}
+           
             <tr>
                 <td colspan="4">
                     <table>
@@ -187,37 +180,20 @@
                 <td></td>
             </tr>
 
-            <!-- Business Details -->
-            {{-- <tr>
-                <td colspan="4" class="section-header">Business Details</td>
-            </tr>
-            <tr>
-                <th>Business Name</th>
-                <td>{{ $accusedProfile->business_name }}</td>
-
-                <th>Business Type</th>
-                <td>{{ $accusedProfile->business_type }}</td>
-            </tr>
-            <tr>
-                <th>Contact Number</th>
-                <td>{{ $accusedProfile->number }}</td>
-
-                <th>Email</th>
-                <td>{{ $accusedProfile->email }}</td>
-            </tr> --}}
-
-            <!-- Accused Role -->
+         
 
          
 
 
             <!-- Contact Information -->
-            {{-- <tr>
-                <td colspan="4" class="section-header">Contact Information</td>
-            </tr> --}}
             <tr>
                 <td colspan="4">
                     <strong>Mobile Numbers</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                   
                     <table>
                         <thead>
                             <tr>
@@ -241,6 +217,11 @@
             <tr>
                 <td colspan="4">
                     <strong>Email Addresses</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                   
                     <table>
                         <thead>
                             <tr>
@@ -264,8 +245,46 @@
 
             <!-- Locations -->
 
+
+           
+            
             <tr>
 
+
+<th>Platform</th>
+<th colspan="3">Profile Link</th>
+
+</tr>
+
+<!-- Family Members -->
+
+@foreach ($accusedProfile->social_media_profiles ?? [] as $social)
+<tr>
+    <td>{{ $social['platform'] }}</td>
+    <td colspan="3"><a href="{{ $social['url'] }}" target="_blank">{{ $social['url'] }}</a></td>
+   
+</tr>
+@endforeach
+
+<tr>
+                <td colspan="4">
+                    <strong>Devices</strong>
+                </td>
+              
+            </tr>
+            <tr>
+                <td colspan="4">
+                    {!! nl2br(e($accusedProfile->devices)) !!}
+                </td>
+                  
+            </tr>
+@if($accusedProfile->familyMembers->count() > 0)
+            <tr>  
+                <td colspan="4">
+                    <strong>Family Members</strong>
+                </td>
+            </tr>
+            <tr>
                 <th>Name</th>
                 <th>Relation</th>
                 <th>Photo</th>
@@ -274,26 +293,26 @@
 
             <!-- Family Members -->
 
-            @foreach ($accusedProfile->familyMembers ?? [] as $member)
+            @foreach ($accusedProfile->familyMembers ?? [] as $familymember)
                 <tr>
-                    <td>{{ $member->name }}</td>
-                    <td>{{ $member->relation }}</td>
+                    <td>{{ $familymember->name }}</td>
+                    <td>{{ $familymember->relation }}</td>
 
                     <td>
-                        @if ($member->getFirstMedia('family_member_photos'))
-                            <img src="{{ $member->getFirstMedia('family_member_photos')->getUrl() }}"
-                                alt="{{ $member->name }}">
-                        @endif
+                    
+                    @foreach ($familymember->getMedia() as $media)
+                        <img src="{{ $media->getUrl() }}" alt="Photo" style="max-width: 300px; height: auto;">
+                    @endforeach
                     </td>
                     <td>
-                        Mobile: {{ $member->mobile_no }}
-                        @if ($member->remarks)
-                            <br>Remarks: {{ $member->remarks }}
+                        Mobile: {{ $familymember->mobile_no }}
+                        @if ($familymember->remarks)
+                            <br>Remarks: {{ $familymember->remarks }}
                         @endif
                     </td>
                 </tr>
             @endforeach
-
+            @endif
             <!-- Additional Info -->
 
             <tr>
