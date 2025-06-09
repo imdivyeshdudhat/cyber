@@ -96,6 +96,12 @@ class DailyReportResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('user_id', auth()->id());
+
+        if (auth()->user()->user_type == 'admin') {
+            return parent::getEloquentQuery()->orderBy('id', 'desc');
+        }
+        $userid = auth()->user()->id;
+
+        return parent::getEloquentQuery()->where('user_id', $userid)->orderBy('id', 'desc');
     }
 }

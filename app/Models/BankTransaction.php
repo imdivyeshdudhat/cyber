@@ -15,6 +15,7 @@ class BankTransaction extends Model
         'nodal_officer',
         'acknowledgement_no',
         'account_id',
+        'to_account_id',
         'transaction_id',
         'transaction_id_2',
         'transaction_type',

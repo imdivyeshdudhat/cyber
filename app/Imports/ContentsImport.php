@@ -52,13 +52,15 @@ class SecondSheetImport implements ToCollection
     {
 
         foreach ($rows->skip(1) as $row) {
+
             BankTransaction::create([
                 'transaction_type' => 'Money Transfer',
                 'acknowledgement_no' => $row[1],
                 'transaction_id' => $row[3],             // "S No."
                 'bank_name' => $row[4],             // "Bank/FIs"
                 'layer' => $row[5],             // "Layer"
-                'account_id' => $row[2],             // "Account No./ (Wallet /PG/PA) Id"
+                'account_id' => $row[2],
+                'to_account_id' => $row[6],           // "Account No./ (Wallet /PG/PA) Id"
                 'ifsc_code' => $row[7],             // "Ifsc Code"
                 'transaction_date' => $row[8],             // "Transaction Date"
                 'transaction_id_2' => $row[9],             // "Transaction Id / UTR Number"
