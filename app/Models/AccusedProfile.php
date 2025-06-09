@@ -64,7 +64,7 @@ class AccusedProfile extends Model implements HasMedia
         'bank_accounts' => 'array',
         'ip_addresses' => 'array',
         'locations' => 'array',
-        // 'additional_info' => 'array',
+
     ];
 
     public function case(): BelongsTo

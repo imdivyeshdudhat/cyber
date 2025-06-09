@@ -58,12 +58,7 @@
                 </td>
             </tr>
             <!-- Case Information -->
-            <tr>
-                <th>Full Name </th>
-                <td>{{ $accusedProfile->name }}</td>
-                <th>Date of Birth </th>
-                <td>{{ date('d-m-Y', strtotime($accusedProfile->date_of_birth)) }}</td>
-            </tr>
+          
             <tr>
                 <th>Police Station</th>
                 <td>{{ $accusedProfile->police_station }}</td>
@@ -82,6 +77,11 @@
                 <td>₹{{ number_format($accusedProfile->fraud_amount, 2) }}</td>
                 <th>Victim Name</th>
                 <td>{{ $accusedProfile->compliant_person }}</td>
+            </tr>
+            <tr>
+                <th>Accused Role</th>
+                <td colspan="3">{{ $accusedProfile->accused_role }}</td>
+
             </tr>
 
             <!-- Bank Transactions -->
@@ -120,12 +120,16 @@
             </tr>
 
             <!-- Personal Info -->
-
             <tr>
-                <th>Date of Birth</th>
-                <td>{{ $accusedProfile->date_of_birth?->format('d/m/Y') }}</td>
+                <th>Full Name </th>
+                <td>{{ $accusedProfile->name }}</td>
+                <th>Date of Birth </th>
+                <td>{{ date('d-m-Y', strtotime($accusedProfile->date_of_birth)) }}</td>
+            </tr>
+            <tr>
+              
                 <th>Photos</th>
-                <td>
+                <td colspan="3">
                     @foreach ($accusedProfile->getMedia() as $media)
                         <img src="{{ $media->getUrl() }}" alt="Photo" style="max-width: 300px; height: auto;">
                     @endforeach
@@ -204,12 +208,7 @@
 
             <!-- Accused Role -->
 
-            <tr>
-                <th>Role in Case</th>
-                <td colspan="3">{{ $accusedProfile->accused_role }}</td>
-
-            </tr>
-
+         
 
 
             <!-- Contact Information -->
