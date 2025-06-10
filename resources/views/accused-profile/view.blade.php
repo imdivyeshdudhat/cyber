@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Accused Profile Summary - {{ $accusedProfile->name }}</title>
+    <title>Suspect Profile Summary - {{ $accusedProfile->name }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,7 +54,7 @@
 
             <tr>
                 <td colspan="4" class="section-header">
-                    <h4>Accused Profile - {{ $accusedProfile->name }} </h4>
+                    <h4>Suspect Profile - {{ $accusedProfile->name }} </h4>
                 </td>
             </tr>
             <!-- Case Information -->
@@ -66,9 +66,9 @@
                 <td>{{ $accusedProfile->fir_no }}</td>
             </tr>
             <tr>
-                <th>Accused State</th>
+                <th>Suspect State</th>
                 <td>{{ $accusedProfile->state }}</td>
-                <th>Accused City</th>
+                <th>Suspect City</th>
                 <td>{{ $accusedProfile->city }}</td>
             </tr>
 
@@ -79,7 +79,7 @@
                 <td>{{ $accusedProfile->compliant_person }}</td>
             </tr>
             <tr>
-                <th>Accused Role</th>
+                <th>Suspect Role</th>
                 <td colspan="3">{{ $accusedProfile->accused_role }}</td>
 
             </tr>
