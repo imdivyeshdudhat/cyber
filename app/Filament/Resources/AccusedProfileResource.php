@@ -44,7 +44,21 @@ class AccusedProfileResource extends Resource
         return $form->schema([
             Section::make('Case Information')
                 ->schema([
-                    TextInput::make('police_station'),
+                    Select::make('police_station')
+                        ->options([
+                            'Cyber Crime' => 'Cyber Crime',
+                            'Navsari Town' => 'Navsari Town',
+                            'Navsari Rural' => 'Navsari Rural',
+                            'Maroli' => 'Maroli',
+                            'Jalalpore' => 'Jalalpore',
+                            'Vijalpore' => 'Vijalpore',
+                            'Gandevi' => 'Gandevi',
+                            'Bilimora' => 'Bilimora',
+                            'Dholai Marine' => 'Dholai Marine',
+                            'Chikhli' => 'Chikhli',
+                            'Vansda' => 'Vansda',
+                            'Khergam' => 'Khergam',
+                        ])->required(),
                     TextInput::make('fir_no')->label('FIR No.')->required(),
                     // DatePicker::make('case_date')->label('FIR Date'),
 
