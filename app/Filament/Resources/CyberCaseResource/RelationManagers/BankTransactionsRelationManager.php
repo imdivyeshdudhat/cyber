@@ -5,8 +5,8 @@ namespace App\Filament\Resources\CyberCaseResource\RelationManagers;
 use App\Imports\ContentsImport;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -17,7 +17,6 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use YOS\FilamentExcel\Actions\Import;
-use Filament\Forms\Components\RichEditor;
 
 class BankTransactionsRelationManager extends RelationManager
 {
@@ -31,6 +30,7 @@ class BankTransactionsRelationManager extends RelationManager
             TextInput::make('nodal_officer'),
             TextInput::make('transaction_id'),
             TextInput::make('account_id'),
+            TextInput::make('to_account_id'),
             DatePicker::make('transaction_date'),
             TextInput::make('transaction_amount'),
             RichEditor::make('remarks'),
@@ -68,15 +68,17 @@ class BankTransactionsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table->columns([
+
             Tables\Columns\TextColumn::make('outward_no')->label('Outward No.')->searchable(),
-            Tables\Columns\TextColumn::make('account_id')->label(' Victim A/C')->searchable(),
             Tables\Columns\TextColumn::make('layer')->label('L')->searchable(),
+            Tables\Columns\TextColumn::make('to_account_id')->copyable()->label('Accused A/C')->searchable(),
+            Tables\Columns\TextColumn::make('bank_name')->label('Accused Bank Name'),
+            Tables\Columns\TextColumn::make('transaction_date')->label('Trans. Date'),
+            Tables\Columns\TextColumn::make('transaction_amount')->money('INR')->label('TN Amt.'),
+            Tables\Columns\TextColumn::make('disputed_amount')->money('INR')->label('DS Amt.'),
+
             Tables\Columns\TextColumn::make('transaction_id')->searchable(),
 
-            Tables\Columns\TextColumn::make('transaction_date')->label('Trans. Date'),
-            Tables\Columns\TextColumn::make('transaction_amount')->label('TN Amt.'),
-            Tables\Columns\TextColumn::make('disputed_amount')->label('DS Amt.'),
-            Tables\Columns\TextColumn::make('bank_name')->label('Accused Bank Name'),
             Tables\Columns\TextColumn::make('ifsc_code')->label('IFSC Code'),
             Tables\Columns\TextColumn::make('branch_city_state')->label('Branch-City-State'),
             //   Tables\Columns\TextColumn::make('account_id')->label('Accused Bank A/C'),
@@ -156,11 +158,11 @@ class BankTransactionsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])->defaultSort('layer', 'asc')->groups([
-                'account_id',
+                'bank_name',
                 'layer',
             ])
 
-            ->defaultGroup('account_id');
+            ->defaultGroup('bank_name');
     }
 
     public function getTableHeaderActions(): array

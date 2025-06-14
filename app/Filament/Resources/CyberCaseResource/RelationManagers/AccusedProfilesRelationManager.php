@@ -2,23 +2,21 @@
 
 namespace App\Filament\Resources\CyberCaseResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Textarea; 
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;  
-
+use Filament\Forms\Form;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class AccusedProfilesRelationManager extends RelationManager
 {
     protected static string $relationship = 'accusedProfiles';
-
 
     public function form(Form $form): Form
     {
@@ -33,7 +31,7 @@ class AccusedProfilesRelationManager extends RelationManager
                     FileUpload::make('signature_path')->image()->directory('accused_signatures'),
                 ])
                 ->columns(2),
-    
+
             Section::make('Address Details')
                 ->schema([
                     Repeater::make('family_members')
@@ -44,8 +42,8 @@ class AccusedProfilesRelationManager extends RelationManager
                         ->columnSpanFull(),
                     Textarea::make('address')->columnSpanFull(),
                 ])
-               ->columnSpanFull(),
-    
+                ->columnSpanFull(),
+
             Section::make('Business Details')
                 ->schema([
                     TextInput::make('business_name'),
@@ -54,7 +52,7 @@ class AccusedProfilesRelationManager extends RelationManager
                     Textarea::make('email'),
                 ])
                 ->columns(3),
-    
+
             Section::make('Identification')
                 ->schema([
                     TextInput::make('aadhar_number'),
@@ -62,7 +60,7 @@ class AccusedProfilesRelationManager extends RelationManager
                     TextInput::make('gstin'),
                 ])
                 ->columns(3),
-    
+
             Section::make('Online Presence')
                 ->schema([
                     Repeater::make('social_media_profiles')
@@ -76,8 +74,8 @@ class AccusedProfilesRelationManager extends RelationManager
                     TextInput::make('location'),
                 ])
                 ->columns(2),
-    
-           /* Section::make('Banking Information')
+
+            /* Section::make('Banking Information')
                 ->schema([
                     Repeater::make('bank_accounts')
                         ->schema([
@@ -88,7 +86,7 @@ class AccusedProfilesRelationManager extends RelationManager
                 ])
                 ->columns(2),
               */
-    
+
             Section::make('Additional Information')
                 ->schema([
                     Textarea::make('bio')->rows(3)->columnSpanFull(),
@@ -99,31 +97,34 @@ class AccusedProfilesRelationManager extends RelationManager
                         ])
                         ->columns(2),
                 ])
-                ->columns(3), 
+                ->columns(3),
         ]);
-    
-    
+
     }
 
     public function table(Table $table): Table
     {
-        return $table->columns([
-            Tables\Columns\TextColumn::make('name')->searchable(),
-            Tables\Columns\TextColumn::make('date_of_birth')->date(),
-            Tables\Columns\TextColumn::make('aadhar_number'),
-            Tables\Columns\TextColumn::make('pan_number'),
-        ])
-        ->headerActions([
-            Tables\Actions\CreateAction::make(),
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
-        ])
-        ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]),
-        ]);
+        return $table
+
+            ->columns([
+
+                TextColumn::make('name')->label('Name')->searchable(),
+                TextColumn::make('date_of_birth')->date()->label('DOB'),
+                TextColumn::make('aadhar_number'),
+                TextColumn::make('pan_number'),
+
+            ])
+            ->headerActions([
+                Tables\Actions\CreateAction::make(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
     }
 }

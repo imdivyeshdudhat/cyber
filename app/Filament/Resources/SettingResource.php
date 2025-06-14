@@ -129,6 +129,8 @@ class SettingResource extends Resource
                                     ->subject('SMTP Test Email');
                             });
 
+                            dd($mail);
+
                             Notification::make()
                                 ->title('SMTP Test Successful')
                                 ->body('The test email was sent successfully.')
